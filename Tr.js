@@ -39,7 +39,7 @@ Ext.define('jurisv.ext-locale.Tr', {
     Ext.override(Ext.Base, {
         initConfig: function (instanceConfig) {
             var me = this,
-                ns = TS.common.TR,
+                ns = jurisv.ext-locale.Tr,
                 dic = ns.findObject(ns.dictionary),
                 cfg = me.getConfigurator(),
                 k;
