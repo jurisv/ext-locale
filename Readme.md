@@ -9,10 +9,10 @@
  * }
  *
  * Example 2
- * Text will be replaced using template tpl and content of FwaAbbrevLabel will be applied to placeholder {0}
+ * Text will be replaced using template tpl and content of friendLabel will be applied to placeholder {0}
  * {
- *      dataIndex: 'lastName',
- *      text: {_tr: 'lastNameLabel', tpl: '{0} Name'}
+ *      dataIndex: 'friend',
+ *      text: {_tr: 'friendLabel', tpl: '{0} Name'}
  * }
  *
  * If the key is not found, in development mode, message like this will be displayed in the console:
