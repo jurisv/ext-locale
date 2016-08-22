@@ -159,11 +159,22 @@ Ext.define('Localize.Base', {
     };
 
     Ext.Class.findPackageFromClass = function (hash, className) {
+        var found = false,
+            weight = 0,
+            len;
+
         for (var p in hash) {
             if (hash.hasOwnProperty(p) && className.indexOf(p) === 0) {
-                return hash[p];
+                len = (p.split('.').length - 1);
+
+                if (len >= weight) {
+                    found = hash[p];
+                    weight = len;
+                }
             }
         }
+
+        return found;
     };
 
     //<debug>
@@ -223,8 +234,9 @@ Ext.define('Localize.Base', {
 
                                 if (data.$className && data.$className.indexOf('Ext.') !== 0) {
                                     // Recursively walk config data
+
                                     Class.iterateObj(Class.findPackageFromClass(Loc.packageHash, data.$className), data);
-                                    //TODO Remove
+                                    //TODO Remove once stable
                                     //console.log('Localize data:', data.$className, data);
                                 }
                                 return true;
