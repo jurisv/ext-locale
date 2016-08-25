@@ -106,9 +106,20 @@ Ext.define('Localize.Base', {
         var Loc = Localize.Base,
             property, value, str, parts;
 
+               //<debug>
+        if(obj.hasOwnProperty('$observableInitialized')){
+            console.warn("The following property can't be localized as it's content is alrewady initialized. Typically this means that config or class property has initialized using Ext.create.", obj);
+            return;
+        }
+        //</debug>
         for (property in obj) {
             if (obj.hasOwnProperty(property)) {
                 value = obj[property];
+
+                //Ignore values that can't hold localization
+                if(!value) {
+                    continue;
+                }
 
                 // String notation
                 if (typeof value === 'string' && value.indexOf('^') === 0) {
