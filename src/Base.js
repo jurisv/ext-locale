@@ -10,7 +10,7 @@
  *
  * {
  *      xtype: 'textfield',
- *      fieldLabel: '^firstName',
+ *      fieldLabel: '~firstName',
  *      name: 'firstName'
  * }
  *
@@ -18,15 +18,15 @@
  * Namespaced (nested)
  * {
  *      xtype: 'panel',
- *      html: '^content.dummy'
+ *      html: '~content.dummy'
  * }
  *
  * Foreign package
  * Separate package name from variable via pipe. To access variables from main app, use the app name as package
- * For example if your app has name 'Sample', then string would look like this: html: '^Sample|home'
+ * For example if your app has name 'Sample', then string would look like this: html: '~Sample|home'
  * {
  *      xtype: 'checkbox',
- *      html: '^common|yes'
+ *      html: '~common|yes'
  * }
  *
  *
@@ -66,8 +66,8 @@
  * }
  *
  * If the key is not found, in development mode, message like this will be displayed in the console:
- * Missing localization for "title" with value "^title3" in dictionary for package: test1
- * 'title' property will remain untranslated and carry value "^title3"
+ * Missing localization for "title" with value "~title3" in dictionary for package: test1
+ * 'title' property will remain untranslated and carry value "~title3"
  *
  * Example 4
  * Direct access to dictionary
@@ -122,7 +122,7 @@ Ext.define('Localize.Base', {
                 }
 
                 // String notation
-                if (typeof value === 'string' && value.indexOf('^') === 0) {
+                if (typeof value === 'string' && value.indexOf('~') === 0) {
                     str = value.substr(1);
 
                     // Check for package
@@ -158,7 +158,7 @@ Ext.define('Localize.Base', {
                                 console.warn('Missing localization for "' + property + '"' + ' with value "' + value.$key + '" in dictionary for package: ' + pkg);
                             }
                             //</debug>
-                            obj[property] = '^' + value.$key;
+                            obj[property] = '~' + value.$key;
                         }
                     } else {
                         // Proceed with recursion
