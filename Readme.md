@@ -14,7 +14,7 @@ Two formats are supported - String and object
 ```
 {
    xtype: 'textfield',
-   fieldLabel: '^firstName',
+   fieldLabel: '~firstName',
    name: 'firstName'
 }
 ```
@@ -23,18 +23,18 @@ Two formats are supported - String and object
 ```
 {
    xtype: 'panel',
-   html: '^content.dummy'
+   html: '~content.dummy'
 }
 ```
 
 ####Foreign package
 Separate package name from variable via pipe. To access variables from main app, use the app name as package
-For example if your app has name 'Sample', then string would look like this: html: '^Sample|home'
+For example if your app has name 'Sample', then string would look like this: html: '~Sample|home'
 
 ```
 {
    xtype: 'checkbox',
-   html: '^common|yes'
+   html: '~common|yes'
 }
 ```
 
@@ -80,9 +80,9 @@ Note: movieName will come from your viewModel data.
 
 If the key is not found, in development mode, message like this will be displayed in the console:
 ```
-Missing localization for "title" with value "^title3" in dictionary for package: test1
+Missing localization for "title" with value "~title3" in dictionary for package: test1
 ```
-'title' property will remain untranslated and carry value "^title3"
+'title' property will remain untranslated and carry value "~title3"
 
 ####Example 4
 Direct access to dictionary
