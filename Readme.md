@@ -160,17 +160,20 @@ Example index.html script block:
 
         Ext.beforeLoad = function (tags) {
             var profile,
-                    lang,
-                    obj = location.search.substring(1).split("&").reduce(function (prev, curr) {
-                        var p = curr.split("=");
-                        prev[decodeURIComponent(p[0])] = p[1] === undefined ? '' : decodeURIComponent(p[1]);
-                        return prev;
-                    }, {});
+               lang,
+               has = function(prop){
+                    return obj.hasOwnProperty(prop);
+               },
+               obj = location.search.substring(1).split("&").reduce(function (prev, curr) {
+                  var p = curr.split("=");
+                  prev[decodeURIComponent(p[0])] = p[1] === undefined ? '' : decodeURIComponent(p[1]);
+                  return prev;
+               }, {});
 
-            if (obj.classic) {
+            if (has('classic')) {
                 profile = 'classic';
             }
-            else if (obj.modern) {
+            else if (has('modern')) {
                 profile = 'modern';
             }
             else {
@@ -192,7 +195,9 @@ Example index.html script block:
             if (lang.length === 2) {
                 lang = lang === 'en' ? 'en-US' : lang + '-' + lang.toUpperCase();
             }
-
+            
+            if using in conjuction with ext native localization uncomment the following line
+            //Ext.manifest = profile + '-' + lang.substr(0,2); // this name must match a build profile name, plus Ext native class localization
             return function (manifest) {
                 manifest.content.localize = {
                     //detected or overridden language
