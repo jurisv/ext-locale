@@ -53,7 +53,7 @@
      * Typically, changes to the package should come along with changes to the version.
      * This number should be in this format: d+(.d+)*
      */
-    "version": "1.0.0",
+    "version": "2.1.0",
 
     /**
      * The version that users can transparently update from without requiring code changes.
@@ -61,7 +61,7 @@
      * In addition the version property, packages can also indicate the degree to which
      * they are backward compatible using the compatVersion property.
      */
-    "compatVersion": "1.0.0",
+    "compatVersion": "2.1.0",
 
     /**
      * Spec. version of this package.json file.

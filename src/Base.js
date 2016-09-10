@@ -74,6 +74,7 @@
  * Localize.Base.lookup('navigation.users', 'Sample');
  */
 Ext.define('Localize.Base', {
+
     statics: {
         /**
          * @private
@@ -102,13 +103,33 @@ Ext.define('Localize.Base', {
         packages = Manifest.packages,
         counter, key;
 
-    Ext.Class.iterateObj = function (pkg, obj, stack) {
+    Ext.Class.registerPreprocessor('localize',
+        function (cls, data) {
+            // We walk only User classes
+            var Loc = Localize.Base,
+                Class = Ext.Class;
+
+            if (Loc.dataLoaded) {
+                if (data.$className && data.$className.indexOf('Ext.') !== 0) {
+                    // Recursively walk config data
+
+                    Class.iterateObj(data.$className, Class.findPackageFromClass(Loc.packageHash, data.$className), data);
+                    //TODO Remove once stable
+                    //console.log('Localize data:', data.$className, data);
+                }
+            }
+
+            return true;
+        }, true, 'before', 'className'
+    );
+
+    Ext.Class.iterateObj = function (cls, pkg, obj, stack) {
         var Loc = Localize.Base,
             property, value, str, parts;
 
         //<debug>
-        if(obj.hasOwnProperty('$observableInitialized')){
-            console.error("The following property can't be localized as it's content is already initialized. Typically this means that config or class property has initialized using Ext.create.", obj);
+        if (obj.hasOwnProperty('$observableInitialized')) {
+            console.warn("The following property can't be localized as it's content is already initialized. Typically this means that config or class property has initialized using Ext.create.", obj);
             return;
         }
         //</debug>
@@ -117,7 +138,7 @@ Ext.define('Localize.Base', {
                 value = obj[property];
 
                 //Ignore values that can't hold localization
-                if(!value) {
+                if (!value || typeof value === 'function' || typeof value === 'boolean') {
                     continue;
                 }
 
@@ -137,7 +158,7 @@ Ext.define('Localize.Base', {
                     if (!obj[property]) {
                         //<debug>
                         if (cfg.debug) {
-                            console.warn('Missing localization for "' + property + '"' + ' with value "' + value + '" in dictionary for package: ' + pkg);
+                            console.warn('Missing localization for "' + property + '"' + ' with value "' + value + '" in class "' + cls + '", package: ' + pkg);
                         }
                         //</debug>
                         obj[property] = value;
@@ -155,14 +176,14 @@ Ext.define('Localize.Base', {
                         } else {
                             //<debug>
                             if (cfg.debug) {
-                                console.warn('Missing localization for "' + property + '"' + ' with value "' + value.$key + '" in dictionary for package: ' + pkg);
+                                console.warn('Missing localization for "' + property + '"' + ' with value "' + value.$key + '" in class "' + cls + '", package: ' + pkg);
                             }
                             //</debug>
                             obj[property] = '~' + value.$key;
                         }
                     } else {
                         // Proceed with recursion
-                        Ext.Class.iterateObj(pkg, obj[property], stack + '.' + property);
+                        Ext.Class.iterateObj(cls, pkg, obj[property], stack + '.' + property);
                     }
                 }
             }
@@ -190,7 +211,7 @@ Ext.define('Localize.Base', {
 
     //<debug>
     if (!cfg) {
-        console.error('Ext.manifest is missing localize config; terminatig.');
+        console.warn("Ext.manifest is missing localize config. Can't continue!");
         return true;
     }
     //</debug>
@@ -237,23 +258,8 @@ Ext.define('Localize.Base', {
                             console.dir(me.dictionaries);
                         }
                         //</debug>
-                        Ext.Class.registerPreprocessor('localize',
-                            function (cls, data) {
-                                // We walk only User classes
-                                var Loc = Localize.Base,
-                                    Class = Ext.Class;
 
-                                if (data.$className && data.$className.indexOf('Ext.') !== 0) {
-                                    // Recursively walk config data
-
-                                    Class.iterateObj(Class.findPackageFromClass(Loc.packageHash, data.$className), data);
-                                    //TODO Remove once stable
-                                    //console.log('Localize data:', data.$className, data);
-                                }
-                                return true;
-                            }, true, 'before', 'className'
-                        );
-
+                        me.dataLoaded = true;
                     }
                 },
 
