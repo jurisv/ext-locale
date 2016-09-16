@@ -263,9 +263,9 @@ Ext.define('Sample.Application', {
 ...
 ```
 
-6) IMPORTANT! Disable Sencha CMD production build optimizations. In file .sencha/production.properties add the following line
+6) IMPORTANT! Disable Sencha CMD production build optimization for 'define' method. In file .sencha/production.properties add the following line
 ```
-build.optimize=
+build.optimize.defines=
 ```
 
 #
