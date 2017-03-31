@@ -1,9 +1,10 @@
 ###Provides mechanism for lightweight localisation using Predefined dictionary object
 
 Compatibility:
-Ext JS 6EA +
+Ext JS 6.2. Sencha CMD 6.5 GA +
+Requires dynamic package loder.
 
-Version 2.1.0
+Version 2.5.0
 
 
 ####Example 1 - Simple string
@@ -223,6 +224,9 @@ Example index.html script block
                 lang = lang === 'en' ? 'en-US' : lang + '-' + lang.toUpperCase();
             }
 
+            // This function is called once the manifest is available but before
+            // any data is pulled from it.
+            //
             return function (manifest) {
                 manifest.content.localize = {
                     //detected or overridden language
@@ -240,7 +244,8 @@ Example index.html script block
                     // You can access localizations from main application via foreign package notation appName|variableName
                     usePackages: true,
                     // All but production builds will have useful warnings/ debug information
-                    debug: !manifest.content.productionMode
+                    debug: !manifest.content.productionMode,
+                    dynamic: true //Starting from CMD 6.5 we have dynamic package loader. If enabled, it will load only active package localizations
                 };
             };
         };
@@ -275,7 +280,7 @@ https://github.com/jurisv/Localize
 
 
 ####The MIT License (MIT)
-Copyright (c) 2016 Juris Vecvanags
+Copyright (c) 2016-2017 Juris Vecvanags
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
