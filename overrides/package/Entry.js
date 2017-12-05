@@ -9,10 +9,8 @@ Ext.define(null, {
         me.packageName = name;
         me.jsUrl = Ext.getResourcePath(name + '.js', null, name);
         me.cssUrl = Ext.getResourcePath(name + '.css', null, name);
-        //me.localeUrl = Ext.getResourcePath('resources/' + Ext.String.format(localize.urlTpl, localize.language), null, name);
-        // Temp workaround for dev mode;
-        me.localeUrl = '/packages/local/' + name + '/resources/data/locale-en-US.json';
-
+        me.localeUrl = Ext.getResourcePath('resources/' + Ext.String.format(localize.urlTpl, localize.language), null, name);
+        
         me.promise = new Ext.Promise(function (resolve, reject) {
             me.resolveFn = resolve;
             me.rejectFn = reject;
