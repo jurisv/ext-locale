@@ -21,7 +21,7 @@ Field label will be replaced with firstName content from dictionary
 Two formats are supported - String and object
 
 #### String format
-```
+```javascript
 {
    xtype: 'textfield',
    fieldLabel: '~firstName',
@@ -30,7 +30,7 @@ Two formats are supported - String and object
 ```
 
 #### Namespaced (nested)
-```
+```javascript
 {
    xtype: 'panel',
    html: '~content.dummy'
@@ -41,7 +41,7 @@ Two formats are supported - String and object
 Separate package name from variable via pipe. To access variables from main app, use the app name as package
 For example if your app has name 'Sample', then string would look like this: html: '^Sample|home'
 
-```
+```javascript
 {
    xtype: 'checkbox',
    html: '~common|yes'
@@ -50,7 +50,7 @@ For example if your app has name 'Sample', then string would look like this: htm
 
 ### Example 2 - Object format
 _**Important: We are using property named '$key' to identify objects that require localization.**_
-```
+```javascript
 {
    xtype: 'textfield',
    fieldLabel: {$key: 'firstName'},
@@ -59,7 +59,7 @@ _**Important: We are using property named '$key' to identify objects that requir
 ```
 Text will be replaced using template tpl and content of lastNameLabel will be applied to placeholder {0}
 Optionally you can specify foreign package
-```
+```javascript
 {
    dataIndex: 'lastName',
    text: {$key: 'lastNameLabel', tpl: '{0} Name', pkg: 'common'}
@@ -68,7 +68,7 @@ Optionally you can specify foreign package
 
 ### Example 3
 Support within bindings
-```
+```javascript
 {
    xtype: 'panel',
    bind: {
@@ -79,7 +79,7 @@ Support within bindings
 
 Assuming that 'showTimesFor' has string 'Show times for:' after localization object will look as follows
 Note: movieName will come from your viewModel data.
-```
+```javascript
 {
    xtype: 'panel',
    bind: {
@@ -105,7 +105,7 @@ Localize.Base.lookup('navigation.users', 'Sample');
 ### Payload examples
 
 locale-en-US.json
-```
+```json
 {
   "title": "User registration panel",
   "title2": "Something great",
@@ -117,7 +117,7 @@ locale-en-US.json
 
 locale-es-ES.json
 
-```
+```json
 {
   "title": "Panel de registro de usuario",
   "content": {
@@ -133,7 +133,7 @@ locale-es-ES.json
 1) Add this package to your local packages folder
 2) In app.json build profile add localize package as requirement, e.g. 
 
-```
+```json
 "builds": {
         "classic": {
             "toolkit": "classic",
@@ -156,7 +156,7 @@ locale-es-ES.json
 
 We also add custom property "productionMode" and set it to true. This will be visible only in production build and used later to turn off any debugging.
 If you have the production section within build profiles, make sure that you place that variable within same location ('production' object)
-```
+```json
 /**
      * Settings specific to production builds.
      */
@@ -182,7 +182,7 @@ If you have the production section within build profiles, make sure that you pla
 
 
 3) In every package that should be localized add the following config to the package.json
-```
+```json
  /**
     *
     * Enable localization support for this package
@@ -262,7 +262,7 @@ Example index.html script block
 ```
 
 5) In Applciation.js require the Localization Base class. It should be the required after any Ext classes, but before your own packages
-```
+```javascript
 Ext.define('Sample.Application', {
     extend: 'Ext.app.Application',
 
