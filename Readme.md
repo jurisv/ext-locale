@@ -15,7 +15,7 @@ Sencha CMD 6.5+
 *For older versions try 'old' code branch instead.
 
 
-#### Example 1 - Simple string
+### Example 1 - Simple string
 Field label will be replaced with firstName content from dictionary
 
 Two formats are supported - String and object
@@ -94,7 +94,7 @@ Missing localization for "title" with value "~title3" in dictionary for package:
 ```
 'title' property will remain untranslated and carry value "~title3"
 
-#### Example 4
+### Example 4
 Direct access to dictionary
 ```
 Localize.Base.lookup('navigation.users', 'Sample');
@@ -102,7 +102,7 @@ Localize.Base.lookup('navigation.users', 'Sample');
 
 
 #
-#### Payload examples
+### Payload examples
 
 locale-en-US.json
 ```
@@ -128,7 +128,8 @@ locale-es-ES.json
 
 
 #
-#### Installation and Config
+### Installation and Config
+
 1) Add this package to your local packages folder
 2) In app.json build profile add localize package as requirement, e.g. 
 
@@ -282,6 +283,7 @@ build.optimize.defines=
 ```
 
 #
+### Example project
 
 Example project can be found here:
 https://github.com/jurisv/Localize
