@@ -101,7 +101,9 @@ Ext.define('Localize.Base', {
         Manifest = Ext.manifest,
         cfg = Manifest.localize,
         packages = Manifest.packages,
-        counter, key;
+        cmdVersion = new Ext.Version(Manifest.packages['cmd'].version),
+        isLegacy = cmdVersion.isLessThan('6.5'),
+        urlPrefix, counter, key;
 
     Ext.Class.registerPreprocessor('localize',
         function (cls, data) {
@@ -109,13 +111,10 @@ Ext.define('Localize.Base', {
             var Loc = Localize.Base,
                 Class = Ext.Class;
 
-            if (Loc.dataLoaded) {
+            if (Loc.isReady) {
                 if (data.$className && data.$className.indexOf('Ext.') !== 0) {
                     // Recursively walk config data
-
                     Class.iterateObj(data.$className, Class.findPackageFromClass(Loc.packageHash, data.$className), data);
-                    //TODO Remove once stable
-                    //console.log('Localize data:', data.$className, data);
                 }
             }
 
@@ -127,12 +126,13 @@ Ext.define('Localize.Base', {
         var Loc = Localize.Base,
             property, value, str, parts;
 
-        //<debug>
         if (obj.hasOwnProperty('$observableInitialized')) {
-            console.warn("The following property can't be localized as it's content is already initialized. Typically this means that config or class property has initialized using Ext.create.", obj);
+            //<debug>
+            console.warn("The following property can't be localized as it's content is already initialized. Typically this means that config or class property has initialized using Ext.create.", cls, obj);
+            //</debug>
             return;
         }
-        //</debug>
+
         for (property in obj) {
             if (obj.hasOwnProperty(property)) {
                 value = obj[property];
@@ -218,7 +218,8 @@ Ext.define('Localize.Base', {
 
     // Add Main application
     me.dictionaries[Manifest.name] = {
-        path: Ext.getResourcePath(Ext.String.format(cfg.urlTpl, cfg.language))
+        path: Ext.getResourcePath(Ext.String.format(cfg.urlTpl, cfg.language)),
+        dynamic: false //Application base localization is always loaded
     };
 
     me.packageHash[Manifest.name] = Manifest.name;
@@ -228,47 +229,56 @@ Ext.define('Localize.Base', {
         //Search for packages that should be localized
         for (key in packages) {
             if (packages.hasOwnProperty(key) && packages[key].localize) {
-                me.dictionaries[key] = {
-                    path: Ext.getResourcePath(Ext.String.format(cfg.urlTpl, cfg.language), null, key.toLowerCase())
-                };
+                if (isLegacy) {
+                    me.dictionaries[key] = {
+                        path: Ext.getResourcePath(Ext.String.format(cfg.urlTpl, cfg.language), null, key.toLowerCase())
+                    };
+                } else {
+                    urlPrefix = packages[key].required ? '' : 'resources/'; //dynamically loaded packages has resources in diferent folder
+                    me.dictionaries[key] = {
+                        // path: Ext.getResourcePath(Ext.String.format(urlPrefix + cfg.urlTpl, cfg.language), null, key.toLowerCase())
+                        path: '/packages/local/' + key + '/resources/data/locale-en-US.json', // Temp workaround for dev mode
+                        dynamic: !packages[key].included // Mark dynamic if it is not loaded within main app block
+                    };
+                }
 
                 me.packageHash[packages[key].namespace] = key;
             }
         }
     }
 
-    counter = Object.keys(me.dictionaries).length;
-
+    //Dynamic mode loading is handed over to package loader
     for (key in me.dictionaries) {
         if (me.dictionaries.hasOwnProperty(key)) {
-            Ext.Ajax.request({
-                url: me.dictionaries[key].path,
-                key: key,
-                async: false, // We have to use sync request to ensure that our locales are available prior class definition
+            // Legacy loading for CMD < 6.5 or newer with USES section
+            // Load locales for packages that are part of requires section, dynamic ones are loaded via package loader
+            if (isLegacy || (cfg.dynamic && !me.dictionaries[key].dynamic)) {
+                Ext.Ajax.request({
+                    url: me.dictionaries[key].path,
+                    key: key,
+                    async: false, // We have to use sync request to ensure that our locales are available prior class definition
 
-                callback: function (options, success, response) {
-                    if (success) {
-                        me.dictionaries[options.key].dic = Ext.decode(response.responseText);
-                    }
+                    callback: function (options, success, response) {
+                        if (success) {
+                            me.dictionaries[options.key].dic = Ext.decode(response.responseText);
+                        }
 
-                    if (!--counter) {
                         //<debug>
                         if (cfg.debug) {
-                            console.log('Available locales:');
-                            console.dir(me.dictionaries);
+                            console.log('Localization for package "' + options.key + '" loaded');
                         }
                         //</debug>
 
-                        me.dataLoaded = true;
-                    }
-                },
+                        me.isReady = true; //Main app dic is loaded, we can start processing classes
+                    },
 
-                failure: function (response, opts) {
-                    //<debug>
-                    console.error('Missing locale');
-                    //</debug>
-                }
-            });
+                    failure: function (response, opts) {
+                        //<debug>
+                        console.error('Missing locale');
+                        //</debug>
+                    }
+                });
+            }
         }
     }
 });
