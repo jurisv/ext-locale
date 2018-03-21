@@ -1,18 +1,26 @@
-###Provides mechanism for lightweight localisation using Predefined dictionary object
+# About 
 
-Compatibility:
-Ext JS 6.2. Sencha CMD 6.5 GA +
-Requires dynamic package loder.
+Ext-locale package provides mechanism for lightweight localisation using predefined dictionary object. 
 
-Version 2.5.0
+It fully supports dynamic package loader and provides property replacement within class at any given level. Additionally it can be used within XTemplate and ensures tight integration with view bindings.
+
+Current Version 2.5.0 compatibility:
+
+Ext JS 6.5.0+ 
+
+Sencha CMD 6.5+
+
+*Requires dynamic package loader.
+
+*For older versions try 'old' code branch instead.
 
 
-####Example 1 - Simple string
+#### Example 1 - Simple string
 Field label will be replaced with firstName content from dictionary
 
 Two formats are supported - String and object
 
-####String format
+#### String format
 ```
 {
    xtype: 'textfield',
@@ -21,7 +29,7 @@ Two formats are supported - String and object
 }
 ```
 
-####Namespaced (nested)
+#### Namespaced (nested)
 ```
 {
    xtype: 'panel',
@@ -29,7 +37,7 @@ Two formats are supported - String and object
 }
 ```
 
-####Foreign package
+#### Foreign package
 Separate package name from variable via pipe. To access variables from main app, use the app name as package
 For example if your app has name 'Sample', then string would look like this: html: '^Sample|home'
 
@@ -40,7 +48,7 @@ For example if your app has name 'Sample', then string would look like this: htm
 }
 ```
 
-###Example 2 - Object format
+### Example 2 - Object format
 _**Important: We are using property named '$key' to identify objects that require localization.**_
 ```
 {
@@ -58,7 +66,7 @@ Optionally you can specify foreign package
 }
 ```
 
-###Example 3
+### Example 3
 Support within bindings
 ```
 {
@@ -86,7 +94,7 @@ Missing localization for "title" with value "~title3" in dictionary for package:
 ```
 'title' property will remain untranslated and carry value "~title3"
 
-####Example 4
+#### Example 4
 Direct access to dictionary
 ```
 Localize.Base.lookup('navigation.users', 'Sample');
@@ -94,7 +102,7 @@ Localize.Base.lookup('navigation.users', 'Sample');
 
 
 #
-####Payload examples
+#### Payload examples
 
 locale-en-US.json
 ```
@@ -275,12 +283,16 @@ build.optimize.defines=
 
 #
 
-Example project can be fond here:
+Example project can be found here:
 https://github.com/jurisv/Localize
 
 
-####The MIT License (MIT)
-Copyright (c) 2016-2017 Juris Vecvanags
+#### Future development
+
+As this is fundamental requirement for the most Enterprise applications, we are currently experimenting with the idea of providing replacement core class/Boot files.
+
+#### The MIT License (MIT)
+Copyright (c) 2016-2018 Juris Vecvanags
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
