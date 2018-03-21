@@ -96,7 +96,7 @@ Missing localization for "title" with value "~title3" in dictionary for package:
 
 ### Example 4
 Direct access to dictionary
-```
+```javascript
 Localize.Base.lookup('navigation.users', 'Sample');
 ```
 
@@ -278,7 +278,7 @@ Ext.define('Sample.Application', {
 ```
 
 6) IMPORTANT! Disable Sencha CMD production build optimization for 'define' method. In file .sencha/production.properties add the following line
-```
+```javascript
 build.optimize.defines=
 ```
 
@@ -289,7 +289,7 @@ Example project can be found here:
 https://github.com/jurisv/Localize
 
 
-#### Future development
+### Future development
 
 As this is fundamental requirement for the most Enterprise applications, we are currently experimenting with the idea of providing replacement core class/Boot files.
 
