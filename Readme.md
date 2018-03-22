@@ -281,6 +281,14 @@ Ext.define('Sample.Application', {
 ```javascript
 build.optimize.defines=
 ```
+For latest versions of CMD if you no longer have .sencha folder in your project, you have to add this setting to the output section like this
+```json
+"js": {
+      "optimize": {
+          "defines: ""
+          }
+      }
+```
 
 #
 ### Example project
