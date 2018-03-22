@@ -285,9 +285,10 @@ For latest versions of CMD if you no longer have .sencha folder in your project,
 ```json
 "js": {
       "optimize": {
-          "defines: ""
-          }
-      }
+        "defines": false,
+        "callParent": true,
+        "requires": true,
+    }
 ```
 
 #
